@@ -4,46 +4,34 @@ const AudioContext = createContext<{}>({})
 
 export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const hasAttemptedAutoplay = useRef(false)
+  const startedRef = useRef(false)
 
   useEffect(() => {
-    // Prevent duplicate audio instances
-    if (audioRef.current) return
+    if (!audioRef.current || startedRef.current) return
 
-    // Create global audio instance
-    const audio = new Audio('/background_music.mp3')
-    audio.loop = true
-    audio.volume = 0.35
-    
-    // We want to avoid mobile weirdness by ensuring it plays inline
-    audio.setAttribute('playsinline', 'true')
-    
-    audioRef.current = audio
+    const startMusic = async () => {
+      if (!audioRef.current || startedRef.current) return
 
-    const playAudio = () => {
-      if (!audioRef.current) return
-      
-      const playPromise = audioRef.current.play()
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            // Autoplay started successfully
-            removeListeners()
-          })
-          .catch((_error) => {
-            // Autoplay was blocked
-            // Keep the listeners alive so the next interaction triggers play
-          })
+      try {
+        await audioRef.current.play()
+        startedRef.current = true
+        cleanupListeners()
+      } catch (err) {
+        // Browser autoplay blocked.
+        // Keep gesture listeners active.
+        if (import.meta.env.DEV) {
+          console.warn("Autoplay blocked, waiting for interaction", err)
+        }
       }
     }
 
-    const interactionEvents = ['pointerdown', 'touchstart', 'keydown', 'scroll']
-    
+    const interactionEvents = ['pointerdown', 'touchstart', 'click', 'keydown']
+
     const handleInteraction = () => {
-      playAudio()
+      startMusic()
     }
 
-    const removeListeners = () => {
+    const cleanupListeners = () => {
       interactionEvents.forEach(evt => {
         window.removeEventListener(evt, handleInteraction)
       })
@@ -51,36 +39,40 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const addListeners = () => {
       interactionEvents.forEach(evt => {
-        window.addEventListener(evt, handleInteraction, { once: true, passive: true })
+        // We do NOT use {once: true} here because if it fails, we want it to retry on next click.
+        window.addEventListener(evt, handleInteraction, { passive: true })
       })
     }
 
-    if (!hasAttemptedAutoplay.current) {
-      hasAttemptedAutoplay.current = true
-      
-      // Attempt immediate autoplay
-      const playPromise = audio.play()
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            // Autoplay succeeded immediately! No need for interaction listeners.
-          })
-          .catch((_error) => {
-            // Autoplay blocked. We must wait for first user interaction.
-            addListeners()
-          })
+    // Try autoplay immediately on mount
+    const tryAutoplay = async () => {
+      try {
+        await audioRef.current?.play()
+        startedRef.current = true
+      } catch (err) {
+        if (import.meta.env.DEV) {
+          console.warn("Initial autoplay blocked", err)
+        }
+        addListeners()
       }
     }
 
+    tryAutoplay()
+
     return () => {
-      removeListeners()
-      // We don't destroy the audio on unmount to keep it playing across hot reloads in dev, 
-      // but strictly speaking, in production React it will persist because context sits at root.
+      cleanupListeners()
     }
   }, [])
 
   return (
     <AudioContext.Provider value={{}}>
+      <audio
+        ref={audioRef}
+        src="/background_music.mp3"
+        loop
+        preload="auto"
+        playsInline
+      />
       {children}
     </AudioContext.Provider>
   )
