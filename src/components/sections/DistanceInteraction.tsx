@@ -152,7 +152,7 @@ export default function DistanceInteraction() {
             dragElastic={0}
             dragMomentum={false}
             style={{ x, scale, transformOrigin: 'bottom right' }}
-            className="absolute bottom-4 z-20 cursor-grab active:cursor-grabbing left-16"
+            className="absolute bottom-4 z-20 cursor-grab active:cursor-grabbing left-16 touch-none"
           >
             <div className="relative w-16 md:w-24">
               <SiblingB state={dragProgress > 0.95 ? 'wave' : 'walk'} facing="left" />

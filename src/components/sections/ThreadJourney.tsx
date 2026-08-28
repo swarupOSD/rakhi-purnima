@@ -199,8 +199,10 @@ export default function ThreadJourney() {
               style={{ x }}
               className="absolute top-1/2 -translate-y-1/2 -ml-6 w-12 h-12 flex items-center justify-center cursor-grab active:cursor-grabbing z-20 group"
             >
-              <div className="w-6 h-6 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,1)] border-2 border-crimson flex items-center justify-center">
-                <div className="w-2 h-2 bg-saffron rounded-full"></div>
+              <div className="absolute top-[-10px] w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-yellow-300 to-orange-500 rounded-full shadow-[0_0_15px_#f59e0b] border-2 border-white cursor-grab active:cursor-grabbing z-20 flex items-center justify-center touch-none">
+                <div className="w-6 h-6 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,1)] border-2 border-crimson flex items-center justify-center">
+                  <div className="w-2 h-2 bg-saffron rounded-full"></div>
+                </div>
               </div>
             </motion.div>
             

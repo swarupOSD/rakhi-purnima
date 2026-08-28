@@ -160,7 +160,7 @@ export default function NightSky() {
           dragElastic={0}
           dragMomentum={false}
           style={{ y }}
-          className="absolute left-1/2 -translate-x-1/2 w-16 h-16 flex flex-col items-center justify-start cursor-grab active:cursor-grabbing z-30 group"
+          className="absolute left-1/2 -translate-x-1/2 w-24 h-24 flex flex-col items-center justify-start cursor-grab active:cursor-grabbing z-30 group touch-none"
         >
           <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full border-2 border-saffron flex items-center justify-center shadow-[0_0_15px_#f59e0b]">
             <div className="w-3 h-3 bg-gradient-to-br from-yellow-300 to-orange-500 rounded-full animate-pulse"></div>

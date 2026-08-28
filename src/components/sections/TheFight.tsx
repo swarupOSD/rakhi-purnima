@@ -110,7 +110,7 @@ export default function TheFight() {
 
                 {/* The Object of Desire (Charger) */}
                 <motion.div 
-                  className="absolute left-1/2 bottom-20 -translate-x-1/2 z-30 flex flex-col items-center cursor-grab active:cursor-grabbing"
+                  className="absolute left-1/2 bottom-20 -translate-x-1/2 z-30 flex flex-col items-center cursor-grab active:cursor-grabbing touch-none"
                   drag="x"
                   dragConstraints={{ left: -150, right: 150 }}
                   onDrag={handleDrag}

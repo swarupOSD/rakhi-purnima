@@ -1,4 +1,5 @@
 {
+  "name": "rakhi-purnima",
   "rewrites": [
     {
       "source": "/(.*)",
