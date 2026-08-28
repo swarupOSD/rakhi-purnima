@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+Bengali:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #0a0a0f;
+  --color-midnight-light: #161622;
+  --color-ivory: #faf7f2;
+  --color-cream: #FDFBF7;
+  --color-saffron: #f4b445;
+  --color-marigold: #f9a03f;
+  --color-vermillion: #e03c31;
+  --color-crimson: #d7263d;
+  --color-royal-red: #8B0000;
+  --color-warm-brown: #3e2723;
+  
+  --color-thread-glow: rgba(224, 60, 49, 0.4);
+  --color-gold-glow: rgba(244, 180, 69, 0.4);
+  
+  --font-serif: "Cormorant Garamond", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-bengali: "Noto Serif Bengali", "Noto Sans Bengali", sans-serif;
+}
+
+@layer base {
+  :root {
+    background-color: var(--color-cream);
+    color: var(--color-warm-brown);
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--color-cream);
+    color: var(--color-warm-brown);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  ::selection {
+    background: var(--color-crimson);
+    color: var(--color-ivory);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-midnight);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-midnight-light);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #333344;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 20px rgba(250, 247, 242, 0.3);
+  }
+  
+  .text-glow-crimson {
+    text-shadow: 0 0 20px rgba(215, 38, 61, 0.5);
+  }
+  
+  .bg-noise {
+    position: relative;
+  }
+  
+  .bg-noise::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .thread-glow {
+    box-shadow: 0 0 15px var(--color-thread-glow), 0 0 30px var(--color-thread-glow);
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shadow-soft-ground {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  }
+  
+  .shadow-warm-glow {
+    box-shadow: 0 10px 40px -10px rgba(244, 180, 69, 0.3);
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0% { opacity: 0.6; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.02); box-shadow: 0 0 25px var(--color-thread-glow); }
+  100% { opacity: 0.6; transform: scale(0.98); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s infinite ease-in-out;
+}
+
+@keyframes sway {
+  0% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+  100% { transform: rotate(-3deg); }
+}
+
+.animate-sway {
+  animation: sway 5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes dust {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  25% { opacity: 0.8; }
+  75% { opacity: 0.8; }
+  100% { transform: translateY(-50px) translateX(20px) scale(0.5); opacity: 0; }
+}
+
+.animate-dust {
+  animation: dust 10s linear infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.8; transform: scaleY(1) scaleX(1); }
+  25% { opacity: 1; transform: scaleY(1.1) scaleX(0.9); }
+  50% { opacity: 0.9; transform: scaleY(0.9) scaleX(1.1); }
+  75% { opacity: 1; transform: scaleY(1.2) scaleX(0.9); }
+  100% { opacity: 0.8; transform: scaleY(1) scaleX(1); }
+}
+
+.animate-flicker {
+  animation: flicker 0.5s infinite;
+  transform-origin: bottom center;
+}
